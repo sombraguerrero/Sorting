@@ -25,43 +25,47 @@ int main(int argc, char* argv[]) {
 
 	srt1.setRandomData(initVal);
 	fileOut << "srt1 PRE-QUICK SORT: " << srt1 << endl;
-	fileOut << srt1.quickSort() << " comparisons; ";
+	fileOut << srt1.quickSort() << " comparisons ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "QUICK-SORT: " << srt1 << endl << endl;
 
-	int heapSortComparisons = 0;
 	srt1.setRandomData(initVal);
 	fileOut << "srt1 PRE-HEAP SORT: " << srt1 << endl;
-	srt1.heapsort(heapSortComparisons);
-	fileOut << heapSortComparisons  << " comparisons; ";
+	srt1.heapsort();
+	fileOut << srt1.getComparisons()  << " comparisons; ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "HEAP SORT: " << srt1 << endl << endl;
 
 	srt1.setRandomData(initVal);
 	fileOut << "srt1 PRE-SHELL SORT 2: " << srt1 << endl;
-	fileOut << srt1.ShellSort2() << " comparisons; ";
+	srt1.ShellSort2();
+	fileOut << srt1.getComparisons() << " comparisons; ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "SHELL-SORT 2: " << srt1 << endl << endl;
 
 	srt1.setRandomData(initVal);
 	fileOut << "srt1 PRE-SHELL SORT: " << srt1 << endl;
-	fileOut << srt1.ShellSort() << " comparisons; ";
+	srt1.ShellSort();
+	fileOut << srt1.getComparisons() << " comparisons; ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "SHELL-SORT: " << srt1 << endl << endl;
 
 	srt1.setRandomData(initVal);
 	fileOut << endl << "srt1 PRE-SELECTION SORT: " << srt1 << endl;
-	fileOut << srt1.selectionSort() << " comparisons; ";
+	srt1.selectionSort();
+	fileOut << srt1.getComparisons() << " comparisons; ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "POST-SELECTION SORT: " << srt1 << endl << endl;
 	
 	srt1.setRandomData(initVal);
 	fileOut << "srt1 PRE-BUBBLE SORT: " << srt1 << endl;
-	fileOut << srt1.bubbleSort() << " comparisons; ";
+	srt1.bubbleSort();
+	fileOut << srt1.getComparisons() << " comparisons; ";
 	fileOut << srt1.getNumberSwap() << " swaps." << endl;
 	fileOut << "POST-BUBBLE SORT: " << srt1 << endl << endl;
 	
-	fileOut << srt1.binarySearch(rand() % initVal, fileOut) << " comparisons performed in the search." << endl;
+	srt1.binarySearch(rand() % initVal, fileOut);
+	fileOut << srt1.getComparisons() << " comparisons performed in the search." << endl;
 
 	fileOut.close();
 

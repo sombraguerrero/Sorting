@@ -5,28 +5,26 @@
 using namespace std;
 
 template <class T>
-long Sorting<T>::quickSort() {
-	numberSwap = 0;
-
+int Sorting<T>::quickSort() {
 	return quickSort(0, size-1);
 }
 
 template<class T>
-void Sorting<T>::moveDown(int first, int last, int &hscomps) {
+void Sorting<T>::moveDown(int first, int last) {
 	int largest = 2 * first + 1;
 	while (largest <= last) {
 		if (largest < last && // first has two children (at 2*first+1 and
 			data[largest] < data[largest + 1]) // 2*first+2) and the second
 		{
 			largest++; // is larger than the first;
-			hscomps++;
+			compCount++;
 		}
 
 
 		if (data[first] < data[largest]) {   // if necessary,
 			swap(data[first], data[largest]);// swap child and parent,
 			numberSwap++;
-			hscomps++;
+			compCount++;
 			first = largest;                // and move down;
 			largest = 2 * first + 1;
 		}
@@ -35,37 +33,35 @@ void Sorting<T>::moveDown(int first, int last, int &hscomps) {
 }
 
 template<class T>
-void Sorting<T>::heapsort(int& hsc) {
-	resetSwap();
+void Sorting<T>::heapsort() {
+	resetCounters();
 	int i;
-	hsc = 0;
 	for (i = size / 2 - 1; i >= 0; --i)   // create the heap;
-		moveDown(i, size - 1, hsc);
+		moveDown(i, size - 1);
 	for (i = size - 1; i >= 1; --i) {
 		swap(data[0], data[i]); // move the largest item to data[i];
 		numberSwap++;
-		moveDown(0, i - 1, hsc);  // restore the heap property;
+		moveDown(0, i - 1);  // restore the heap property;
 	}
 }
 
 template<class T>
-long Sorting<T>::quickSort(int first, int last)
+int Sorting<T>::quickSort(int first, int last)
 {
-	resetSwap();
-	long numberComp = 0;
+	resetCounters();
 	int lower = first+1, upper = last;
 	numberSwap++;
 	swap(data[first],data[(first+last)/2]);
 	T bound = data[first];
 	while (lower <= upper) {
-		numberComp++;
+		compCount++;
 		while (data[lower] < bound){
-			numberComp++;
+			compCount++;
 			lower++;
 		}
-		numberComp++;
+		compCount++;
 		while (bound < data[upper]){
-			numberComp++;
+			compCount++;
 			upper--;
 		}
 		if (lower < upper) {
@@ -77,16 +73,15 @@ long Sorting<T>::quickSort(int first, int last)
 	numberSwap++;
 	swap(data[upper],data[first]);
 	if (first < upper-1)
-		numberComp += quickSort (first,upper-1);
+		compCount += quickSort (first,upper-1);
 	if (upper+1 < last)
-		numberComp += quickSort (upper+1,last);
-
-	return numberComp;
+		compCount += quickSort (upper+1,last);
+	return compCount;
 }
 
 template <class T>
-long Sorting<T>::binarySearch(int query, ostream &fOut) {
-	long comp = 0L;
+void Sorting<T>::binarySearch(int query, ostream &fOut) {
+	resetCounters();
 	int mid;
 	int first = 0;
 	int last = size-1;
@@ -104,7 +99,7 @@ long Sorting<T>::binarySearch(int query, ostream &fOut) {
 		else {
 			last = mid-1;
 		}
-		comp++;
+		compCount++;
 	}
 	if (found) {
 		fOut << "The queried value of " << query << " was found in data[" << mid << "]." << endl;
@@ -112,34 +107,30 @@ long Sorting<T>::binarySearch(int query, ostream &fOut) {
 	else {
 		fOut << "The query was NOT found!" << endl;
 	}
-	return comp;
 }
 
 template <class T>
-long Sorting<T>::bubbleSort() {
-	long numComp = 0;
-	resetSwap();
+void Sorting<T>::bubbleSort() {
+	resetCounters();
 
 	for (int i=0; i<size-1; i++) {
 		for (int j=0; j<size-1-i; j++) {
-			numComp++;
+			compCount++;
 			if (data[j] > data[j+1]) {
 				numberSwap++;
 				swap(data[j], data[j+1]);
 			}
 		}
-	}
-	return numComp;
+	};
 
 }
 
 template <class T>
-int Sorting<T>::ShellSort()
+void Sorting<T>::ShellSort()
 {
 	bool isDone = true;
 	int gap = size / 2;
-	int comps = 0;
-	resetSwap();
+	resetCounters();
 	while (gap >= 1)
 	{
 		do
@@ -147,7 +138,7 @@ int Sorting<T>::ShellSort()
 			isDone = true;
 			for (int i = 0; i < size - gap; i++)
 			{
-				comps++;
+				compCount++;
 				if (data[i] > data[i + gap])
 				{
 					numberSwap++;
@@ -158,16 +149,14 @@ int Sorting<T>::ShellSort()
 		} while (!isDone);
 		gap /= 2;
 	}
-	return comps;
 }
 
 template <class T>
-int Sorting<T>::ShellSort2()
+void Sorting<T>::ShellSort2()
 {
 	int i, j, hCnt, h;
 	int increments[20], k;
-	int comps = 0;
-	resetSwap();
+	resetCounters();
 	//  create an appropriate number of increments h
 	for (h = 1, i = 0; h < size; i++)
 	{
@@ -189,7 +178,7 @@ int Sorting<T>::ShellSort2()
 				k = j;
 				while (k - h >= 0 && tmp < data[k - h])
 				{
-					comps++;
+					compCount++;
 					data[k] = data[k - h];
 					k -= h;
 				}
@@ -198,7 +187,6 @@ int Sorting<T>::ShellSort2()
 			}
 		}
 	}
-	return comps;
 }
 
 template <class T>
@@ -225,12 +213,11 @@ void Sorting<T>:: allocateMemory(int newSize){
 }
 
 template <class T>
-long Sorting<T>::selectionSort(){
-	long comparisons = 0;
-	resetSwap();
+void Sorting<T>::selectionSort(){
+	resetCounters();
 	for (int i = 0, least, j; i < size-1; i++) {
 		for (j = i+1, least = i; j < size; j++){
-			comparisons++;
+			compCount++;
 			if (data[j] < data[least]){
 				least = j;
 			}
@@ -238,7 +225,6 @@ long Sorting<T>::selectionSort(){
 		numberSwap++;
 		swap(data[least], data[i]);
 	}
-	return comparisons;
 }
 
 template <class T>

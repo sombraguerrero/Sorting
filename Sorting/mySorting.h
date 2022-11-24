@@ -13,6 +13,7 @@ private:
     T* data;
     long  size;
     long numberSwap;
+    int compCount;
 
     void clear() {
         if (data != NULL) {
@@ -31,24 +32,25 @@ public:
         assert(n >= 10);
         size = n;
         data = new T[size];
-        numberSwap = 0;
+        numberSwap = compCount = 0;
     }
 
     ~Sorting() { clear(); }
     long getSize() {return size;}
+    int getComparisons() { return compCount; }
     void setRandomData(int newSize);
     long getNumberSwap(){return numberSwap;}
-    void resetSwap() { numberSwap = 0; }
+    void resetCounters() { numberSwap = compCount = 0; }
     void allocateMemory(int newSize);
-    long selectionSort();
-    long bubbleSort();
-    long quickSort(int first, int last);
-	long quickSort();
-    long binarySearch(int query, ostream &fOut);
-    void heapsort(int &hsp);
-    void moveDown(int first, int last, int& hscomps);
-    int ShellSort();
-    int ShellSort2();
+    void selectionSort();
+    void bubbleSort();
+    int quickSort(int first, int last);
+	int quickSort();
+    void binarySearch(int query, ostream &fOut);
+    void heapsort();
+    void moveDown(int first, int last);
+    void ShellSort();
+    void ShellSort2();
 
     template <class S>
     friend ostream& operator <<(ostream& fOut, const Sorting<S>& srt);
