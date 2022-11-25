@@ -38,10 +38,10 @@ public:
     ~Sorting() { clear(); }
     long getSize() {return size;}
     int getComparisons() { return compCount; }
-    void setRandomData(int newSize);
+    void LoadArray(bool sequential);
+    void Shuffle();
     long getNumberSwap(){return numberSwap;}
     void resetCounters() { numberSwap = compCount = 0; }
-    void allocateMemory(int newSize);
     void selectionSort();
     void bubbleSort();
     int quickSort(int first, int last);
@@ -51,6 +51,8 @@ public:
     void moveDown(int first, int last);
     void ShellSort();
     void ShellSort2();
+    void InterpSearch(int query, ostream& fOut);
+    int RandomQuery() { return data[rand() % size]; }
 
     template <class S>
     friend ostream& operator <<(ostream& fOut, const Sorting<S>& srt);

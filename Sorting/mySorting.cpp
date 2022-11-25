@@ -101,11 +101,45 @@ void Sorting<T>::binarySearch(int query, ostream &fOut) {
 		}
 		compCount++;
 	}
-	if (found) {
-		fOut << "The queried value of " << query << " was found in data[" << mid << "]." << endl;
+	if (found)
+	{
+		fOut << query << " was found in data[" << mid << "] (Binary)." << endl << compCount << " comparisons performed in the search." << endl;
 	}
-	else {
-		fOut << "The query was NOT found!" << endl;
+	else
+	{
+		fOut << query << " was not found! (Binary)" << endl;
+	}
+}
+template <class T>
+void Sorting<T>::InterpSearch(int query, ostream& fOut)
+{
+	resetCounters();
+	int low, mid, high;
+	low = 0;
+	mid = -1;
+	high = size - 1;
+	bool found = false;
+	while (low <= high)
+	{
+		mid = low + ((high - low) / (data[high] - data[low])) * (query - data[low]);
+		if (data[mid] == query)
+		{
+			fOut << query << " found at data[" << mid << "] (Interpolation)." << endl << compCount << " comparisons were performed." << endl;
+			found = true;
+			break;
+		}
+		else
+		{
+			if (data[mid] < query)
+				low = mid + 1;
+			else if (data[mid] > query)
+				high = mid - 1;
+		}
+		compCount++;
+	}
+	if (!found)
+	{
+		fOut << query << " was not found! (Interpolation)" << endl;
 	}
 }
 
@@ -190,27 +224,38 @@ void Sorting<T>::ShellSort2()
 }
 
 template <class T>
-void Sorting<T>::setRandomData(int newSize) {
-	allocateMemory(newSize);
-	for( int i = 0; i < size; i++ ) {
-		data[i] = (T) ( rand()%newSize);
+void Sorting<T>::Shuffle()
+{
+	for (int i = 0; i < size; i++)
+	{
+		swap(data[i], data[rand() % size]);
 	}
 }
 
 template <class T>
-void Sorting<T>:: allocateMemory(int newSize){
-	assert(newSize > 0);
-	if(size == newSize   &&  size != 0  && data != NULL){
-		return;
+void Sorting<T>::LoadArray(bool sequential)
+{
+	if (data == NULL)
+	{
+		data = new T[size];
 	}
-
-	if (data != NULL){
-		delete [] data;
+	if (!sequential)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			data[i] = rand();
+		}
 	}
-	size = newSize;
-	data = new T[size];
-
+	else
+	{
+		for (int i = 0; i < size; i++)
+		{
+			data[i] = i + 1;
+		}
+	}
 }
+
+
 
 template <class T>
 void Sorting<T>::selectionSort(){
