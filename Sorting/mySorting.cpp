@@ -46,6 +46,55 @@ void Sorting<T>::heapsort() {
 }
 
 template<class T>
+void Sorting<T>::EnumSort(ostream& fOut) {
+	resetCounters();
+	int* counts;
+	counts = new int[size];
+
+	for (int i = 0; i < size; i++)
+	{
+		counts[i] = 0;
+	}
+
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = i + 1; j < size; j++)
+		{
+			if (data[i] < data[j])
+			{
+				counts[j]++;
+			}
+			else
+			{
+				counts[i]++;
+			}
+		}
+	}
+	cout << "This is line 68!" << endl;
+	int *sortedArray;
+	sortedArray = new int[size];
+	for (int i = 0; i < size; i++)
+	{
+		sortedArray[counts[i]] = data[i];
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		data[i] = sortedArray[i];
+	}
+	
+	fOut << "Counts: [";
+	for (int i = 0; i < size - 1; i++)
+	{
+		fOut << counts[i] << ",";
+	}
+	fOut << counts[size - 1] << ']' << endl;
+	
+	delete[] counts;
+	delete[] sortedArray;
+}
+
+template<class T>
 int Sorting<T>::quickSort(int first, int last)
 {
 	resetCounters();
@@ -233,17 +282,24 @@ void Sorting<T>::Shuffle()
 }
 
 template <class T>
-void Sorting<T>::LoadArray(bool sequential)
+void Sorting<T>::LoadArray(bool sequential, int limit)
 {
 	if (data == NULL)
 	{
 		data = new T[size];
 	}
-	if (!sequential)
+	if (!sequential && limit == 0)
 	{
 		for (int i = 0; i < size; i++)
 		{
 			data[i] = rand();
+		}
+	}
+	else if (!sequential && limit > 0)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			data[i] = rand() % limit;
 		}
 	}
 	else

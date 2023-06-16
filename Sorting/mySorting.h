@@ -29,7 +29,6 @@ private:
 public:
     Sorting(){ size=0; data = NULL; numberSwap=0; }
     Sorting(int n){
-        assert(n >= 10);
         size = n;
         data = new T[size];
         numberSwap = compCount = 0;
@@ -38,7 +37,7 @@ public:
     ~Sorting() { clear(); }
     long getSize() {return size;}
     int getComparisons() { return compCount; }
-    void LoadArray(bool sequential);
+    void LoadArray(bool sequential, int limit = 0);
     void Shuffle();
     long getNumberSwap(){return numberSwap;}
     void resetCounters() { numberSwap = compCount = 0; }
@@ -51,6 +50,7 @@ public:
     void moveDown(int first, int last);
     void ShellSort();
     void ShellSort2();
+    void EnumSort(ostream& fout);
     void InterpSearch(int query, ostream& fOut);
     int RandomQuery() { return data[rand() % size]; }
 
